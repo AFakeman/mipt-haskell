@@ -3,7 +3,6 @@ import Control.Monad
 -- Task 12
 -- Task 13
 -- Task 17
--- Task 20
 
 -- Task 9
 head' :: [a] -> a
@@ -105,3 +104,13 @@ sbseqs [] = []
 sbseqs xs = filterM (const [True, False]) xs
 
 -- Task 20
+sieve_helper :: [Integer] -> [Integer]
+sieve_helper [] = []
+sieve_helper (x:xs) = x : sieve_helper [y | y <- xs, mod y x /= 0 ]
+
+sum_helper n = [ (x, y) | x <- sieve_helper [2..n],
+                          y <- sieve_helper [2..x],
+                          x + y == n ]
+
+sum_split :: Integer -> (Integer, Integer)
+sum_split n = head $ sum_helper n
