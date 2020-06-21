@@ -72,14 +72,14 @@ readInputFile :: Args -> IO String
 readInputFile args = catch (readFile $ argInputFile args)
                            (handleIOError handleInputErrorMessage)
 
-writeOutputFile :: Args -> [String] -> IO ()
-writeOutputFile args xs = catch (writeFile outFile contents)
+writeOutputFile :: Args -> String -> IO ()
+writeOutputFile args x = catch (writeFile outFile x)
                           (handleIOError handleOutputErrorMessage)
     where outFile = argOutputFile args
-          contents = foldl (\x y -> x ++ y ++ "\n") "" xs
 
 mainWithArgs :: Args -> IO ()
 mainWithArgs a = (readInputFile a) >>=
                  (return . lines) >>=
                  (return . (sortAscDesc (argSortOrder a))) >>=
+                 (return . unlines) >>=
                  (writeOutputFile a)
