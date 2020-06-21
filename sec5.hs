@@ -2,7 +2,6 @@ import Control.Monad
 -- Missing:
 -- Task 12
 -- Task 13
--- Task 17
 
 -- Task 9
 head' :: [a] -> a
@@ -92,6 +91,20 @@ duprem_helper u (x:xs)
 
 duprem :: Eq a => [a] -> [a]
 duprem xs = reverse $ duprem_helper [] xs
+
+-- Task 17
+qsplit :: Ord a => [a] -> ([a], a, [a])
+qsplit (x:xs) = (le, x, gt)
+    where le = filter (<= x) xs
+          gt = filter (> x) xs
+
+kth :: Ord a => Int -> [a] -> a
+kth k xs
+    | pos == k = x
+    | pos > k = kth k le
+    | pos < k = kth (k - pos) gt
+    where (le, x, gt) = qsplit xs
+          pos = length le + 1
 
 -- Task 18
 part :: Int -> Int -> [[Int]]
