@@ -5,6 +5,9 @@ instance Num Nat where
     m + Z = m
     m + (S n) = S (m + n)
 
+    _ * Z = Z
+    m * (S n) = m + m * n
+
     Z - _ = Z
     m - Z = m
     (S m) - (S n) = m - n
@@ -45,8 +48,7 @@ instance Enum Nat where
     fromEnum (S n) = 1 + fromEnum n
 
 instance Real Nat where
-    toRational Z = 0
-    toRational (S n) = 1 + toRational n
+    toRational = toRational . toInteger
 
 instance Integral Nat where
     mod x y
@@ -56,6 +58,10 @@ instance Integral Nat where
     div x y
         | x >= y = 1 + div (x - y) y
         | otherwise = 0
+
+    toInteger Z = 0
+    toInteger (S n) = 1 + toInteger n
+    quotRem m n = (div m n, mod m n)
 
 -- Task 35
 data Tree a = Nil | Node (Tree a) a (Tree a)
