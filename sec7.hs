@@ -1,3 +1,7 @@
+-- Missing:
+-- Task 36
+-- Task 37
+-- Task 39
 data Nat = Z | S Nat
     deriving (Eq, Ord, Show)
 
@@ -72,3 +76,26 @@ foldt f x (Node l y r) = f (foldt f x l) y (foldt f x r)
 
 t35 :: Tree Int -> Int
 t35 = foldt (\x y z -> x + y + z) 0
+
+-- Task 38
+data Cmpr a = Sg a | Mlt a Int
+    deriving (Show)
+
+compress_helper :: Eq a => [Cmpr a] -> a -> [Cmpr a]
+compress_helper [] y  = [Sg y]
+compress_helper ((Sg x) : xs) y
+    | x == y = (Mlt x 2):xs
+    | otherwise = (Sg y):(Sg x):xs
+compress_helper ((Mlt x c):xs) y
+    | x == y = (Mlt x (c + 1)):xs
+    | otherwise = (Sg y):(Mlt x c):xs
+
+compress :: Eq a => [a] -> [Cmpr a]
+compress = reverse . foldl compress_helper []
+
+decompress_helper :: Cmpr a -> [a]
+decompress_helper (Sg x) = [x]
+decompress_helper (Mlt x c) = replicate c x
+
+decompress :: [Cmpr a] -> [a]
+decompress = concat . map decompress_helper

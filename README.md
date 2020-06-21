@@ -8,5 +8,4 @@
 * Task 13
 * Task 36
 * Task 37
-* Task 38
 * Task 39
