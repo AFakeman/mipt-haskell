@@ -4,7 +4,6 @@
 
 # Tasks missing
 
-* Task 37
 * Task 39
 * Task 47
 * Project
