@@ -109,6 +109,9 @@ rotateRight (Node (Node ll lx lr) x r) = Node ll lx (Node lr x r)
 rotateLeft :: Tree a -> Tree a
 rotateLeft (Node l x (Node rl rx rr)) = Node (Node l x rl) rx rr
 
+-- Task 37
+-- See task37.hs
+
 -- Task 38
 data Cmpr a = Sg a | Mlt a Int
     deriving (Show)
