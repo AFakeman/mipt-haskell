@@ -77,6 +77,38 @@ foldt f x (Node l y r) = f (foldt f x l) y (foldt f x r)
 t35 :: Tree Int -> Int
 t35 = foldt (\x y z -> x + y + z) 0
 
+-- Task 36
+insAVL :: (Ord a) => a -> Tree a -> Tree a
+insAVL a = fst . (insAVLHelper a)
+
+insAVLHelper :: (Ord a) => a -> Tree a -> (Tree a, Int)
+insAVLHelper x Nil = (Node Nil x Nil, 1)
+insAVLHelper x (Node l y r)
+    | x <= y = let (newL, leftDepth) = insAVLHelper x l
+                   rightDepth = treeDepth r
+                   newTree = Node newL y r in
+                   if leftDepth > rightDepth + 1 then
+                       (rotateRight newTree, leftDepth)
+                   else
+                       (newTree, leftDepth + 1)
+    | x > y = let (newR, rightDepth) = insAVLHelper x r
+                  leftDepth = treeDepth l
+                  newTree = Node l y newR in
+                  if rightDepth > leftDepth + 1 then
+                      (rotateLeft newTree, rightDepth)
+                  else
+                      (newTree, rightDepth + 1)
+
+
+treeDepth :: Tree a -> Int
+treeDepth = foldt (\x _ z -> (max x z) + 1) 0
+
+rotateRight :: Tree a -> Tree a
+rotateRight (Node (Node ll lx lr) x r) = Node ll lx (Node lr x r)
+
+rotateLeft :: Tree a -> Tree a
+rotateLeft (Node l x (Node rl rx rr)) = Node (Node l x rl) rx rr
+
 -- Task 38
 data Cmpr a = Sg a | Mlt a Int
     deriving (Show)
