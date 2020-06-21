@@ -82,6 +82,18 @@ egcd x y
        b = suba - (div x y) * subb
        signMod = signum (x * a + y * b)
 
+-- Task 13
+
+solveDiophantine :: Int -> Int -> Int -> [(Int, Int)]
+solveDiophantine a b c
+    | mod c g == 0 = [(x * c' - b' * t, y * c' + a' * t) | i <- [1..],
+                                                           t <- [-i, i]]
+    | otherwise = []
+    where (g, x, y) = egcd a b
+          c' = div c g
+          a' = div a g
+          b' = div b g
+
 -- Task 14
 dupl :: [a] -> [a]
 dupl [] = []
