@@ -1,6 +1,5 @@
 import Control.Monad
 -- Missing:
--- Task 12
 -- Task 13
 
 -- Task 9
@@ -71,6 +70,17 @@ gcd'' x y
     | y == 0 = x
     | x >= y = gcd'' (x - y) y
     | y >= x = gcd'' (y - x) x
+
+-- Task 12
+egcd :: Int -> Int -> (Int, Int, Int)
+egcd x y
+   | y == 0 = (abs x, 1, 0)
+   | otherwise = (gcd, signMod * a, signMod * b)
+   where
+       (gcd, suba, subb) = egcd y (mod x y)
+       a = subb
+       b = suba - (div x y) * subb
+       signMod = signum (x * a + y * b)
 
 -- Task 14
 dupl :: [a] -> [a]

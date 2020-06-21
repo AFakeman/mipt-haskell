@@ -4,7 +4,6 @@
 
 # Tasks missing
 
-* Task 12
 * Task 13
 * Task 36
 * Task 37
