@@ -1,3 +1,8 @@
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+import Text.Printf
+import Data.List
+
 -- Task 1
 t1_a :: [([(Int, Int -> Int)], Char)]
 t1_a = [([(4, \x -> x + 1)],'a')]
@@ -70,7 +75,6 @@ t6 x y = (t6_helper x) == y && (t6_helper x) == y
 t7 = scanl (+) 1 [2..]
 
 -- Task 8
--- Not done.
 type Bfn = Bool -> Bool -> Bool -> Bool
 
 bfnZero :: Bfn
@@ -86,4 +90,31 @@ bfnProd :: Bfn -> Bfn -> Bfn
 bfnProd f g = \x y z -> (f x y z) && (g x y z)
 
 bfnNeg :: Bfn -> Bfn
-bfnNeg f = \x y z -> not (f x y z)
+bfnNeg = id
+
+bfnEq :: Bfn -> Bfn -> Bool
+bfnEq f g = and [f x y z == g x y z | x <- tf, y <-tf, z <- tf]
+    where tf = [True, False]
+
+bfnFmt :: Bfn -> Bool -> Bool -> Bool -> String
+bfnFmt f x y z = printf "%s %s %s -> %s" (bf x) (bf y) (bf z) (bf r)
+    where r = f x y z
+          bf True = "0"
+          bf False = "1"
+
+instance Eq Bfn where
+    (==) = bfnEq
+
+instance Num Bfn where
+    (+) = bfnSum
+    (*) = bfnProd
+    negate = bfnNeg
+
+instance Show Bfn where
+    show f = intercalate ", "
+                [bfnFmt f x y z| x <- tf,
+                                 y <- tf,
+                                 z <- tf]
+        where bf True = "0"
+              bf False = "1"
+              tf = [True, False]
